@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>英検4級 2022年度第2回 リスニング Part 3</title>
+    <script src="auth.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-dark: #1b2a4a;
+            --navy-light: #2c3e60;
+            --gold: #d4af37;
+            --gold-light: #f4e8c1;
+            --gold-dark: #aa8c2c;
+            --black: #222222;
+            --gray-bg: #f5f6f8;
+            --gray-border: #d0d5dd;
+            --white: #ffffff;
+            --error-red: #d32f2f;
+            --success-green: #2e7d32;
+            --base-font: 'Andika', "Hiragino Maru Gothic ProN", "Hiragino Maru Gothic Pro", "Yu Gothic", "Meiryo", sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--base-font);
+            background-color: var(--gray-bg);
+            color: var(--black);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--navy-dark);
+            color: var(--white);
+            width: 100%;
+            padding: 18px 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border-bottom: 4px solid var(--gold);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+        }
+
+        .container {
+            max-width: 650px;
+            width: 92%;
+            margin: 20px 0;
+            background: var(--white);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            text-align: center;
+            border: 3px solid var(--gold);
+        }
+
+        .menu-grid { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 18px; 
+            margin-top: 20px; 
+        }
+
+        .menu-btn {
+            background: var(--white);
+            border: 3px solid var(--navy-dark);
+            color: var(--navy-dark);
+            padding: 22px;
+            border-radius: 16px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .menu-btn:hover { 
+            background: var(--gold-light); 
+            border-color: var(--gold-dark);
+            transform: translateY(-2px); 
+        }
+
+        .menu-btn span { 
+            display: block; 
+            font-size: 0.9rem; 
+            color: #555; 
+            margin-top: 8px; 
+            font-weight: normal;
+        }
+
+        .progress-bar { 
+            font-size: 1.1rem; 
+            color: var(--navy-dark); 
+            margin-bottom: 15px; 
+            font-weight: bold; 
+        }
+
+        .audio-area {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 15px 0 25px 0;
+            min-height: 140px;
+            background-color: var(--gray-bg);
+            padding: 20px;
+            border-radius: 16px;
+            border: 2px dashed var(--navy-light);
+        }
+
+        .speaker-btn {
+            background: var(--navy-dark);
+            border: 3px solid var(--gold);
+            color: var(--gold);
+            font-size: 2.5rem;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 0 var(--navy-light);
+            transition: all 0.1s ease;
+        }
+
+        .speaker-btn:active { 
+            transform: translateY(4px); 
+            box-shadow: 0 1px 0 var(--navy-light); 
+        }
+
+        .audio-label {
+            font-size: 0.95rem;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .revealed-word {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--navy-dark);
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: #eef2f7;
+            border-radius: 8px;
+            border-left: 5px solid var(--gold);
+            display: none;
+            word-break: break-word;
+        }
+
+        .choices-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+        }
+
+        @media (max-width: 480px) {
+            .choices-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .choice-btn-base {
+            background: var(--white);
+            border: 2px solid var(--navy-dark);
+            border-radius: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--navy-dark);
+            font-family: var(--base-font);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px 10px;
+            line-height: 1.3;
+            min-height: 80px;
+            font-size: 1.15rem;
+        }
+
+        .choice-btn-base:hover { 
+            background-color: var(--gold-light); 
+            border-color: var(--gold-dark);
+        }
+
+        .choice-btn-base.wrong { 
+            background-color: #ffebee; 
+            border-color: var(--error-red); 
+            color: var(--error-red); 
+            animation: shake 0.3s; 
+        }
+
+        @keyframes shake { 
+            0%, 100% {transform: translateX(0);} 
+            25% {transform: translateX(-5px);} 
+            75% {transform: translateX(5px);} 
+        }
+
+        #quiz-screen, #result-screen { display: none; }
+        .score-num { font-size: 3.5rem; color: var(--navy-dark); font-weight: 700; }
+        
+        .mistake-list { 
+            text-align: left; 
+            background: var(--gray-bg); 
+            padding: 15px; 
+            border-radius: 12px; 
+            margin-top: 15px; 
+            border: 1px solid var(--gray-border); 
+        }
+        
+        .mistake-item { 
+            display: flex; 
+            flex-direction: column;
+            gap: 4px;
+            padding: 10px 0; 
+            border-bottom: 1px solid #e0e0e0; 
+        }
+
+        .mistake-item:last-child {
+            border-bottom: none;
+        }
+
+        .mistake-eng {
+            font-weight: bold;
+            color: var(--navy-dark);
+        }
+
+        .mistake-jp {
+            color: #444;
+            font-size: 0.95rem;
+        }
+
+        .action-btn { 
+            background-color: var(--navy-dark); 
+            color: white; 
+            border: 2px solid var(--gold); 
+            padding: 15px; 
+            border-radius: 30px; 
+            font-size: 1.1rem; 
+            font-weight: bold; 
+            cursor: pointer; 
+            margin-top: 12px; 
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: var(--navy-light);
+        }
+
+        .action-btn-secondary {
+            background-color: #607d8b;
+            border: none;
+        }
+
+        .next-btn {
+            background-color: var(--gold-dark);
+            color: var(--white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            display: none;
+            width: 100%;
+        }
+
+        .next-btn:hover {
+            background-color: var(--gold);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 id="main-title">英検4級 2022年度第2回 リスニング Part 3<br>Do you understand the statements?</h1>
+</header>
+
+<div class="container" id="menu-screen">
+    <h2 style="margin-bottom:10px; color: var(--navy-dark);">学習をはじめよう！</h2>
+    <p style="color: #555; font-size: 0.95rem; margin-bottom: 20px;">
+        音声ボタンを押して英語を聞き、正しい日本語訳を選ぼう！
+    </p>
+    <div class="menu-grid">
+        <button class="menu-btn" onclick="startQuiz()">
+            Activity：1文チェック（全42問）
+            <span>リスニング文を1文ずつ正確に理解しよう！</span>
+        </button>
+    </div>
+</div>
+
+<div class="container" id="quiz-screen">
+    <div class="progress-bar" id="progress">1 / 42</div>
+    
+    <div class="audio-area">
+        <button class="speaker-btn" id="speaker-btn" onclick="speakCurrentWord()">🔊</button>
+        <div class="audio-label">ボタンを押して英語を聞こう！</div>
+        <div class="revealed-word" id="revealed-word"></div>
+    </div>
+
+    <div class="choices-grid" id="choices-container"></div>
+    
+    <div id="feedback" style="margin-top:15px; height: 1.2em; font-weight: bold; font-size: 1.3rem;"></div>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">次の問題へ ▶</button>
+</div>
+
+<div class="container" id="result-screen">
+    <h2 id="result-title" style="color: var(--navy-dark);">Activity 終了！</h2>
+    <div style="font-size: 1.2rem;">一発正解数：<span class="score-num" id="final-score">0</span> / <span id="total-questions">0</span></div>
+    
+    <div id="mistake-container" style="display:none;">
+        <h3 style="color: var(--navy-dark); margin-top:25px;">もう一度 かくにん！</h3>
+        <div class="mistake-list" id="mistake-list"></div>
+    </div>
+    
+    <button class="action-btn" onclick="sendEmail()">Tamaki先生に報告する</button>
+    <button class="action-btn action-btn-secondary" onclick="location.reload()">メニューに戻る</button>
+</div>
+
+<script>
+let quizQueue = [];
+let currentIndex = 0;
+let firstTryCorrectCount = 0;
+let isFirstTry = true;
+let mistakes = [];
+let isAnswered = false;
+
+if ('speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = function() {
+        window.speechSynthesis.getVoices();
+    };
+}
+
+const scriptData = [
+    {
+        "w": "Here is your key.",
+        "a": "こちらがあなたの鍵です。",
+        "c": [
+            "こちらがあなたの切符です。"
+        ]
+    },
+    {
+        "w": "Your room number is two-oh-five.",
+        "a": "あなたの部屋番号は205です。",
+        "c": [
+            "あなたの座席番号は205です。"
+        ]
+    },
+    {
+        "w": "The restaurant on the second floor is open until ten o'clock.",
+        "a": "2階のレストランは10時まで開いています。",
+        "c": [
+            "2階の売店は10時に開店します。"
+        ]
+    },
+    {
+        "w": "Enjoy your stay.",
+        "a": "ご滞在をお楽しみください。",
+        "c": [
+            "旅行をお楽しみください。"
+        ]
+    },
+    {
+        "w": "Where is the man talking?",
+        "a": "男性はどこで話していますか？",
+        "c": [
+            "男性は誰と話していますか？"
+        ]
+    },
+    {
+        "w": "My American friends came to Japan last week.",
+        "a": "私のアメリカ人の友達が先週日本に来ました。",
+        "c": [
+            "私のアメリカ人の友達が来週日本に来ます。"
+        ]
+    },
+    {
+        "w": "I took them to a sumo tournament.",
+        "a": "私は彼らを相撲の大会に連れて行きました。",
+        "c": [
+            "私は彼らと相撲の練習をしました。"
+        ]
+    },
+    {
+        "w": "We also went sightseeing, but they enjoyed eating sushi the most.",
+        "a": "私たちは観光にも行きましたが、彼らは寿司を食べることを一番楽しみました。",
+        "c": [
+            "私たちは買い物にも行きましたが、彼らは寿司を作ることを一番楽しみました。"
+        ]
+    },
+    {
+        "w": "What did the man's friends enjoy the most?",
+        "a": "男性の友達が一番楽しんだものは何ですか？",
+        "c": [
+            "男性の友達が一番買いたかったものは何ですか？"
+        ]
+    },
+    {
+        "w": "My friend Sarah had a party tonight.",
+        "a": "私の友達のサラは今夜パーティーを開きました。",
+        "c": [
+            "私の友達のサラは今夜パーティーに行きました。"
+        ]
+    },
+    {
+        "w": "But I was sick and couldn't go.",
+        "a": "しかし私は体調が悪くて行けませんでした。",
+        "c": [
+            "しかし私は忙しくて行けませんでした。"
+        ]
+    },
+    {
+        "w": "I stayed at home.",
+        "a": "私は家にいました。",
+        "c": [
+            "私は学校にいました。"
+        ]
+    },
+    {
+        "w": "What did the boy do tonight?",
+        "a": "男の子は今夜何をしましたか？",
+        "c": [
+            "男の子は明日何をしますか？"
+        ]
+    },
+    {
+        "w": "This morning, Sally made a doll.",
+        "a": "今朝、サリーは人形を作りました。",
+        "c": [
+            "昨日の朝、サリーは人形を買いました。"
+        ]
+    },
+    {
+        "w": "Tomorrow, she's going to visit her grandfather.",
+        "a": "明日、彼女はおじいちゃんを訪ねる予定です。",
+        "c": [
+            "明日、彼女はおばあちゃんを訪ねる予定です。"
+        ]
+    },
+    {
+        "w": "She wants to show him the doll.",
+        "a": "彼女は彼に人形を見せたいと思っています。",
+        "c": [
+            "彼女は彼に人形をあげたいと思っています。"
+        ]
+    },
+    {
+        "w": "What is Sally going to do tomorrow?",
+        "a": "サリーは明日何をする予定ですか？",
+        "c": [
+            "サリーは今朝何をしましたか？"
+        ]
+    },
+    {
+        "w": "It's my father's birthday today, so I'm making a cake.",
+        "a": "今日は父の誕生日なので、私はケーキを作っています。",
+        "c": [
+            "今日は母の誕生日なので、私はケーキを買っています。"
+        ]
+    },
+    {
+        "w": "It's in the oven now, but I just remembered something important.",
+        "a": "今オーブンに入っていますが、大切なことを思い出しました。",
+        "c": [
+            "今冷蔵庫に入っていますが、大切なものを忘れました。"
+        ]
+    },
+    {
+        "w": "I forgot to use sugar!",
+        "a": "砂糖を使うのを忘れました！",
+        "c": [
+            "塩を使うのを忘れました！"
+        ]
+    },
+    {
+        "w": "What is the girl's problem?",
+        "a": "女の子の問題は何ですか？",
+        "c": [
+            "女の子の目標は何ですか？"
+        ]
+    },
+    {
+        "w": "Good morning, class.",
+        "a": "皆さん、おはようございます。",
+        "c": [
+            "皆さん、こんにちは。"
+        ]
+    },
+    {
+        "w": "This week, we have some exciting events at school.",
+        "a": "今週、学校でいくつかのワクワクする行事があります。",
+        "c": [
+            "来週、学校でいくつかのワクワクする行事があります。"
+        ]
+    },
+    {
+        "w": "The speech contest is on Wednesday.",
+        "a": "スピーチコンテストは水曜日にあります。",
+        "c": [
+            "スピーチコンテストは木曜日にあります。"
+        ]
+    },
+    {
+        "w": "And on Friday, a jazz band will perform in the gym.",
+        "a": "そして金曜日には、ジャズバンドが体育館で演奏します。",
+        "c": [
+            "そして土曜日には、ジャズバンドが音楽室で演奏します。"
+        ]
+    },
+    {
+        "w": "When is the speech contest?",
+        "a": "スピーチコンテストはいつですか？",
+        "c": [
+            "ジャズバンドの演奏はいつですか？"
+        ]
+    },
+    {
+        "w": "Debra wanted to take her umbrella to school today because it was raining.",
+        "a": "デブラは今日雨が降っていたので、学校に傘を持って行きたがっていました。",
+        "c": [
+            "デブラは今日暑かったので、学校に日傘を持って行きたがっていました。"
+        ]
+    },
+    {
+        "w": "It wasn't by the front door, so she looked in her father's car.",
+        "a": "玄関のそばになかったので、彼女はお父さんの車の中を探しました。",
+        "c": [
+            "自分の部屋になかったので、彼女はお父さんの車の中を探しました。"
+        ]
+    },
+    {
+        "w": "She found it there.",
+        "a": "彼女はそこでそれを見つけました。",
+        "c": [
+            "彼女はそこでそれをなくしました。"
+        ]
+    },
+    {
+        "w": "Where was Debra's umbrella?",
+        "a": "デブラの傘はどこにありましたか？",
+        "c": [
+            "デブラはお父さんの車で何を見つけましたか？"
+        ]
+    },
+    {
+        "w": "Yuka loves cooking.",
+        "a": "ユカは料理が大好きです。",
+        "c": [
+            "ユカは料理が得意ではありません。"
+        ]
+    },
+    {
+        "w": "She cooks dinner for her family twice a week.",
+        "a": "彼女は週に2回、家族のために夕食を作ります。",
+        "c": [
+            "彼女は月に2回、家族のために夕食を作ります。"
+        ]
+    },
+    {
+        "w": "She also makes pancakes for breakfast once a month.",
+        "a": "彼女はまた、月に1回、朝食にパンケーキを作ります。",
+        "c": [
+            "彼女はまた、週に1回、朝食にパンケーキを作ります。"
+        ]
+    },
+    {
+        "w": "How often does Yuka make pancakes for breakfast?",
+        "a": "ユカはどのくらいの頻度で朝食にパンケーキを作りますか？",
+        "c": [
+            "ユカはどのくらいの頻度で夕食を作りますか？"
+        ]
+    },
+    {
+        "w": "I like making clothes.",
+        "a": "私は服を作るのが好きです。",
+        "c": [
+            "私は服を買うのが好きです。"
+        ]
+    },
+    {
+        "w": "Last month, I made a sweater and a dress.",
+        "a": "先月、私はセーターとドレスを作りました。",
+        "c": [
+            "先月、私はシャツとパンツを買いました。"
+        ]
+    },
+    {
+        "w": "Next, I'm going to make a scarf for my husband.",
+        "a": "次は、夫のためにスカーフを作る予定です。",
+        "c": [
+            "次は、子供のためにスカーフを買う予定です。"
+        ]
+    },
+    {
+        "w": "What will the woman make next?",
+        "a": "女性は次に何を作る予定ですか？",
+        "c": [
+            "女性は先月何を作りましたか？"
+        ]
+    },
+    {
+        "w": "Yesterday, Matt's basketball team had a picnic.",
+        "a": "昨日、マットのバスケットボールチームはピクニックをしました。",
+        "c": [
+            "昨日、マットのサッカーチームは試合をしました。"
+        ]
+    },
+    {
+        "w": "He took some potato chips, and his friend took some cookies.",
+        "a": "彼はポテトチップスを持って行き、友達はクッキーを持って行きました。",
+        "c": [
+            "彼はクッキーを持って行き、友達はポテトチップスを持って行きました。"
+        ]
+    },
+    {
+        "w": "His coach took many drinks.",
+        "a": "コーチはたくさんの飲み物を持って行きました。",
+        "c": [
+            "コーチはたくさんのお菓子を持って行きました。"
+        ]
+    },
+    {
+        "w": "What did Matt take to the picnic?",
+        "a": "マットはピクニックに何を持って行きましたか？",
+        "c": [
+            "マットの友達はピクニックに何を持って行きましたか？"
+        ]
+    }
+];
+
+function startQuiz() {
+    currentIndex = 0;
+    firstTryCorrectCount = 0;
+    mistakes = [];
+    quizQueue = [...scriptData];
+    
+    document.getElementById('menu-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'block';
+    
+    loadQuestion();
+}
+
+function loadQuestion() {
+    const current = quizQueue[currentIndex];
+    document.getElementById('progress').textContent = `${currentIndex + 1} / ${quizQueue.length}`;
+    
+    const revealedWord = document.getElementById('revealed-word');
+    revealedWord.style.display = 'none';
+    revealedWord.textContent = current.w;
+    
+    document.getElementById('feedback').textContent = "";
+    document.getElementById('next-btn').style.display = "none";
+    
+    isFirstTry = true;
+    isAnswered = false;
+
+    const container = document.getElementById('choices-container');
+    container.innerHTML = '';
+
+    const choices = [current.a, ...current.c].sort(() => Math.random() - 0.5);
+    choices.forEach(choice => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-btn-base';
+        btn.innerHTML = choice;
+        btn.onclick = () => checkAnswer(choice, current.a, btn);
+        container.appendChild(btn);
+    });
+
+    setTimeout(() => {
+        speakCurrentWord();
+    }, 300);
+}
+
+function checkAnswer(selected, correct, btn) {
+    if (isAnswered && selected !== correct) return;
+
+    if (selected === correct) {
+        if (isFirstTry) firstTryCorrectCount++;
+        
+        document.getElementById('feedback').style.color = "var(--success-green)";
+        document.getElementById('feedback').textContent = "Excellent! ✨";
+        
+        document.getElementById('revealed-word').style.display = 'block';
+        isAnswered = true;
+
+        const btns = document.querySelectorAll('.choice-btn-base');
+        btns.forEach(b => b.onclick = null);
+
+        document.getElementById('next-btn').style.display = "block";
+
+    } else {
+        if (isFirstTry) {
+            mistakes.push({w: quizQueue[currentIndex].w, a: quizQueue[currentIndex].a});
+            isFirstTry = false;
+        }
+        btn.classList.add('wrong');
+        document.getElementById('feedback').style.color = "var(--error-red)";
+        document.getElementById('feedback').textContent = "Try again!";
+    }
+}
+
+function nextQuestion() {
+    currentIndex++;
+    if (currentIndex < quizQueue.length) {
+        loadQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('result-screen').style.display = 'block';
+    
+    document.getElementById('result-title').textContent = `Activity 終了！`;
+    document.getElementById('final-score').textContent = firstTryCorrectCount;
+    document.getElementById('total-questions').textContent = quizQueue.length;
+    
+    if (mistakes.length > 0) {
+        document.getElementById('mistake-container').style.display = 'block';
+        document.getElementById('mistake-list').innerHTML = mistakes.map(m => `
+            <div class="mistake-item">
+                <span class="mistake-eng">🔊 ${m.w}</span>
+                <span class="mistake-jp">意味：${m.a}</span>
+            </div>
+        `).join('');
+    } else {
+        document.getElementById('mistake-container').style.display = 'none';
+    }
+}
+
+function sendEmail() {
+    const teacherEmail = "tamaki@eigostudio-stepforward.com";
+    const subject = encodeURIComponent(`英検4級 2022-2 リスニング Part 3 学習結果`);
+    
+    const cleanMistakes = mistakes.map(m => `・${m.w} : ${m.a}`).join('\n');
+    let mistakeText = mistakes.length > 0 ? '\n\n■要復習:\n' + cleanMistakes : '\n\n満点でした！完璧です！';
+    
+    const body = encodeURIComponent(`Tamaki先生へ\n\n「英検4級 リスニング Part 3」のトレーニングを完了しました！\n\n結果: ${quizQueue.length}問中 ${firstTryCorrectCount} 問を一発正解。${mistakeText}`);
+    
+    window.location.href = `mailto:${teacherEmail}?subject=${subject}&body=${body}`;
+}
+
+function speakCurrentWord() {
+    const txt = quizQueue[currentIndex].w;
+    window.speechSynthesis.cancel();
+    let u = new SpeechSynthesisUtterance(txt);
+    u.lang = "en-US"; 
+    u.rate = 0.55; // 低速（ゆっくり）設定
+
+    const voices = window.speechSynthesis.getVoices();
+    // Siri（女性）や Samantha / Karen / Victoria / Zira などの明るく自然な女性音声を最優先選択
+    const fv = voices.find(v => 
+        (v.lang.startsWith("en") && v.name.includes("Siri") && v.name.includes("Female")) ||
+        v.name.includes("Samantha") || 
+        v.name.includes("Karen") || 
+        v.name.includes("Victoria") || 
+        v.name.includes("Zira") || 
+        v.name.includes("Google US English") ||
+        (v.lang.startsWith("en") && v.name.includes("Female"))
+    );
+    if (fv) u.voice = fv;
+    
+    window.speechSynthesis.speak(u);
+}
+</script>
+</body>
+</html>
