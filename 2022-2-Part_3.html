@@ -761,7 +761,7 @@ function speakCurrentWord() {
     window.speechSynthesis.cancel();
     let u = new SpeechSynthesisUtterance(txt);
     u.lang = "en-US"; 
-    u.rate = 0.50; // 低速（ゆっくり）設定
+    u.rate = 0.45; // 低速（ゆっくり）設定
 
     const voices = window.speechSynthesis.getVoices();
     // Siri（女性）や Samantha / Karen / Victoria / Zira などの明るく自然な女性音声を最優先選択
